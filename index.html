@@ -1,6 +1,9 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Apto 401 Bloco C</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -80,8 +83,12 @@ li{margin:0 0 7px}
 .ch{font-family:var(--f-display);font-size:15px;margin:6px 0 0}
 .checks{margin:0;padding-left:18px;font-size:14px;display:grid;gap:6px}
 .checks li{margin:0}
+[hidden]{display:none!important}
+body{margin:0;font-family:var(--f-body)}
 </style>
 
+</head>
+<body>
 <div class="wrap">
   <header>
     <div>
@@ -338,7 +345,7 @@ function setControls(){
   else { controls.maxPolarAngle=Math.PI*0.49; controls.minDistance=1.5; controls.maxDistance=30; }
   controls.update();
 }
-function view3d(){ cam=persp; persp.position.set(center.x-6.5, 8.5, center.z+8.5); persp.lookAt(center); setControls(); resize(); }
+function view3d(){ cam=persp; const k=Math.max(1, 0.85*stage.clientHeight/stage.clientWidth); persp.position.set(center.x-6.5*k, 8.5*k, center.z+8.5*k); persp.lookAt(center); setControls(); resize(); }
 function viewPlan(){ cam=ortho; ortho.position.set(center.x, 20, center.z); ortho.up.set(0,0,-1); ortho.lookAt(center); ortho.zoom=1; ortho.updateProjectionMatrix(); setControls(); resize(); }
 function resize(){
   const w=stage.clientWidth, h=stage.clientHeight; renderer.setSize(w,h,false);
@@ -356,7 +363,7 @@ $('b3d').onclick=()=>{press($('b3d'),1);press($('bplan'),0);view3d();};
 $('bplan').onclick=()=>{press($('bplan'),1);press($('b3d'),0);viewPlan();};
 let cut=false; $('bcut').onclick=()=>{cut=!cut;press($('bcut'),cut);buildWalls(cut?CUT_H:WALL_H);};
 let showFur=true; $('bfur').onclick=()=>{showFur=!showFur;press($('bfur'),showFur);furnGroup.visible=showFur;};
-let showDim=true; $('bdim').onclick=()=>{showDim=!showDim;press($('bdim'),showDim);dimGroup.visible=showDim;};
+let showDim=stage.clientWidth>=600; press($('bdim'),showDim); dimGroup.visible=showDim; $('bdim').onclick=()=>{showDim=!showDim;press($('bdim'),showDim);dimGroup.visible=showDim;};
 let measuring=false; const hint=$('hint'), hintDef=hint.textContent;
 $('bmeas').onclick=()=>{measuring=!measuring;press($('bmeas'),measuring);hint.textContent=measuring?'Toque/clique em dois pontos do piso para medir a distância (dica: use a vista Planta + Paredes baixas)':hintDef;};
 $('bclear').onclick=clearMeas;
